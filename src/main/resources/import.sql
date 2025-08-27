@@ -6,3 +6,5 @@ INSERT INTO tb_user(department_id , name , email) VALUES(1 , 'Soraia' , 'soraia@
 INSERT INTO tb_user(department_id , name , email) VALUES(2 , 'André'  , 'andre@email.com');
 INSERT INTO tb_user(department_id , name , email) VALUES(2 , 'Nego'   , 'nego@email.com');
 INSERT INTO tb_user(department_id , name , email) VALUES(2 , 'Zeca'   , 'zeca@email.com');
+INSERT INTO tb_user(department_id , name , email) VALUES(2 , 'Teste'   , 'teste@email.com');
+
