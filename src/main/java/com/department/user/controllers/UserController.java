@@ -4,6 +4,7 @@ import com.department.user.dto.UserDTO;
 import com.department.user.entities.User;
 import com.department.user.repositories.UserRepository;
 import com.department.user.service.UserService;
+import com.department.user.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,16 @@ public class UserController {
     @GetMapping(value = "/{id}")
     @ResponseBody
     public ResponseEntity<String> findById(@PathVariable Long id){
-       userService.findById(id);
-        return new ResponseEntity<String>(" Usuario com o id " +id+ " encontrado com sucesso" , HttpStatus.OK);
+       try {
+           userService.findById(id);
+           return new ResponseEntity<String>(" Usuario com o id " +id+ " encontrado com sucesso" , HttpStatus.OK);
+       } catch (ResourceNotFoundException e) {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                   .body("ID NÃO EXISTE");
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                   .body("Erro ao deletar usuário e ID : " +id+ " inexistente");
+       }
 
     }
 
@@ -50,11 +59,19 @@ public class UserController {
     }
 
     // Metodo para deletar um usuário por ID
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<String> deleteUser(@PathVariable Long id){
-        userService.deleteById(id);
-        return new ResponseEntity<String>("Usuário com o id :  " +id+ " Deletado com sucesso" , HttpStatus.OK);
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        try {
+            userService.deleteById(id);
+            return ResponseEntity.ok("Usuário com ID " + id + " deletado com sucesso.");
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("ID NÃO EXISTE");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erro ao deletar usuário");
+        }
     }
 
     }
